@@ -1,0 +1,75 @@
+import camion.camion
+import cosas.knightRider
+
+describe "testo de camiones y cosas" {
+  test "se agrega carga en el camion" {
+    camion.cargar(knightRider)
+
+    assert.equals(camion.cosas(), #{knightRider})
+  }
+
+  test "se descarga una cosa del camion" {
+    camion.cargar(knightRider)
+    camion.descargar(knightRider)
+
+    assert.equals(camion.cosas(), #{})
+  }
+
+  test "el peso de cada uno de los objetos del camion es un numero par" {
+    
+    camion.cargar(knightRider)
+
+    assert.that(camion.todoPesoPar())
+  }
+
+  test "indica si hay alguna carga en el camion con el peso indicado" {
+    
+    camion.cargar(knightRider)
+
+    assert.that(camion.hayAlgunoQuePesa(500))
+  }
+
+  test "devuelve el primer objeto cuyo nivel de peligrosidad es el indicado" {
+    
+    camion.cargar(knightRider)
+
+    assert.equals(camion.elDeNivel(10), knightRider)
+  }
+
+  test "suma total del peso del camion  con su tara y su carga" {
+    
+    camion.cargar(knightRider)
+
+    assert.equals(1500,camion.pesoTotal())
+  }
+  
+  test "indica si el peso total es supetio al peso maximo" {
+    
+    camion.cargar(knightRider)
+
+    assert.notThat(camion.excedidoDePeso())
+  }
+
+  test "devuelve una coleccion con los objetos cargados qwe superan el nivel de peligrosidad indicado" {
+    
+    camion.cargar(knightRider)
+
+    assert.equals(camion.objetosQueSuperanPeligrosidad(5), #{knightRider})
+  }
+
+  test "devuelve una coleccion con los objetos mas peligrosos que la cosa indicada" {
+    
+    camion.cargar(knightRider)
+
+    assert.equals(camion.objetosMasPeligrososQue(knightRider), #{})
+  }
+
+  test "el camion puede circular si no esta excedido de peso y ninguno de los objetos cargados super el nivel maximo de peligrosidad inficado" {
+    
+    camion.cargar(knightRider)
+    
+    assert.that(camion.puedeCircularEnRuta(10))
+  }
+
+  
+}
