@@ -1,5 +1,5 @@
-import camion.camion
-import cosas.knightRider
+import camion.*
+import cosas.*
 
 describe "testo de camiones y cosas" {
   test "se agrega carga en el camion" {
@@ -69,6 +69,184 @@ describe "testo de camiones y cosas" {
     camion.cargar(knightRider)
     
     assert.that(camion.puedeCircularEnRuta(10))
+  }
+
+  test "indica si el peso de alguna de las cosas que tiene el cammion esta en el intervalo" {
+    
+    camion.cargar(knightRider)
+    camion.cargar(bumblebee)
+    bumblebee.transformacion(robot)
+    camion.cargar(residuosRadioactivos)
+    camion.cargar(bateriaAntiaerea)
+    bateriaAntiaerea.misiles(true)
+    
+    assert.that(camion.tieneAlgoQuePesaEntre(0,800))
+
+  }
+
+  test "devuelve la cosa mas pesada que tenga el camion" {
+    
+    camion.cargar(knightRider)
+    camion.cargar(bumblebee)
+    bumblebee.transformacion(robot)
+    camion.cargar(residuosRadioactivos)
+    camion.cargar(bateriaAntiaerea)
+    bateriaAntiaerea.misiles(true)
+    
+    assert.equals(camion.cosaMasPesada(), bumblebee)
+  }
+
+  test "devuelve una lista con los pesos de cada cosa que tiene el camion" {
+    
+    camion.cargar(knightRider)
+    camion.cargar(bumblebee)
+    bumblebee.transformacion(robot)
+    camion.cargar(residuosRadioactivos)
+    camion.cargar(bateriaAntiaerea)
+    bateriaAntiaerea.misiles(true)
+
+    assert.equals(camion.pesos(),[500,800,15,300])
+  }
+
+  test "suma la cantidad de bultos que tiene el camion " {
+    
+    camion.cargar(knightRider)
+    camion.cargar(bumblebee)
+    bumblebee.transformacion(robot)
+    camion.cargar(residuosRadioactivos)
+    camion.cargar(bateriaAntiaerea)
+    bateriaAntiaerea.misiles(true)
+
+    assert.equals(camion.totalBultos(), 6)
+  }
+
+  test "consecuencias de cargar en el camion arenaDegranel para bumblebee - se tranforma en robot" {
+
+    camion.cargar(bumblebee)
+
+
+    assert.equals(bumblebee.transformacion(), robot)
+    
+  }
+
+  test "consecuencia de carga por agrega paqueteDeLaDRillos - aumenta 12 ladrillos" {
+    
+    camion.cargar(paqueteDeLadrillos)
+
+    assert.equals(paqueteDeLadrillos.cantidadLadrillos(), 12)
+
+  }
+
+  test "consecuencia de carga por agregar arenaDeGranel - aumenta 20 kilos" {
+    
+    camion.cargar(arenaDeGranel)
+
+    assert.equals(arenaDeGranel.peso(), 20)
+
+  }
+
+  test "consecuencia de carga por agregar bateria antiaerea - carga misiles " {
+    
+    camion.cargar(bateriaAntiaerea)
+
+    assert.that(bateriaAntiaerea.estaConMisiles())
+
+  }
+
+  test "consecuencia de cargar contenedor portuario -  hace reaccionar a cada una de las cosas que tiene dentro" {
+
+   contenedorPortuario.cargar(arenaDeGranel) 
+   camion.cargar(contenedorPortuario)
+   
+
+   assert.equals(arenaDeGranel.peso(), 20)
+  }
+
+  test "consecuencia de carga residuos radioactivos - agrega 15 kilos" {
+    
+    camion.cargar(residuosRadioactivos)
+
+    assert.equals(residuosRadioactivos.peso(), 15)
+
+  }
+
+  test "el almacen tiene una capacidad maxima que no se puede superar. el almacen tiene arenaDeGranel 1 bulto y el camion a bumblebee y  knightRider, entonces no puede tranportar" {
+    
+    almacen.agregar(arenaDeGranel)
+    camion.cargar(bumblebee)
+    camion.cargar(knightRider)
+
+    assert.that(almacen.capacidadMaximaReal() <= camion.totalBultos())
+
+  }
+
+  test "el camion va hacia el almacen  por el camino de ruta 9 y deja la carga " {
+    
+    camion.cargar(knightRider)
+    camion.cargar(arenaDeGranel)
+    camion.cargar(bumblebee)
+
+    camion.transportar(almacen,ruta9)
+
+    assert.equals(camion.cosas(), #{})
+    assert.equals(almacen.cosasAlmacen(), #{knightRider,arenaDeGranel,bumblebee})
+
+
+   
+  }
+
+  test "la peligrosidad de ruta 9 es de 11  entonces  el camion  con carga dada puede  utilizar el camino" {
+
+    camion.cargar(knightRider)
+    camion.cargar(arenaDeGranel)
+    camion.cargar(bumblebee)
+
+    assert.that(ruta9.puedeViajar(camion))
+
+  }
+
+  test "el peso maximo maximo de caminos vecinales es de 2500 (configurable) el camion puede utilizar el camino" {
+    
+    camion.cargar(knightRider)
+    camion.cargar(arenaDeGranel)
+    camion.cargar(bumblebee)
+
+    assert.that(caminosVecinales.puedeViajar(camion))
+
+  }
+
+  test "excepcion donde el camion no puede llegar al almacen por exceso de peso" {
+    
+   
+    camion.cargar(knightRider)
+    camion.cargar(arenaDeGranel)
+    camion.cargar(bumblebee)
+    paqueteDeLadrillos.cantidadLadrillos(2000)
+    
+    
+
+    assert.throwsException({camion.validacionTransporte(almacen,caminosVecinales)})
+
+  }
+
+  test "excepcion donde  los bultos del camion superan a la capacidad del almacen" {
+    almacen.agregar(bateriaAntiaerea)
+    camion.cargar(knightRider)
+    camion.cargar(arenaDeGranel)
+    camion.cargar(bumblebee)
+
+    assert.throwsException({ camion.validacionTransporte(almacen,ruta9) })
+    
+  }
+
+  test "excepcion donde el nivel de peligrosidad de la carga del camion supera al maximo de ruta9"{
+
+    camion.cargar(knightRider)
+    camion.cargar(arenaDeGranel)
+    camion.cargar(bumblebee)
+
+    assert.throwsException({ camion.validacionTransporte(almacen,ruta9) })
+
   }
 
   
