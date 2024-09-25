@@ -37,9 +37,9 @@ object robot {
 	method nivelPeligrosidad() = 30
 }
 
-object paqueteDeLadrillos {
 
-	var property cantidadLadrillos = 0
+class PaqueteDeLadrillo{
+		var property cantidadLadrillos = null
 
 	method peso(){
 		return 2 * cantidadLadrillos
@@ -59,6 +59,7 @@ object paqueteDeLadrillos {
 		cantidadLadrillos += 12
 	}
 }
+
 
 object arenaDeGranel {
 
@@ -103,6 +104,8 @@ object bateriaAntiaerea {
 	}
 	
 }
+
+
 
 object contenedorPortuario {
 

@@ -1,0 +1,18 @@
+import camion.*
+import cosas.*
+
+
+
+describe "testeo de camiones con clases" {
+
+    const camionPesado = new Camion(tara= 2000,pesoMaximo= 4500)
+  test " un camion con tara de 2000 y bumblemi en su carga debe tener un peso total de " {
+    
+
+    camionPesado.cargar(bumblebee)
+
+    assert.equals(2800, camionPesado.pesoTotal())
+  }
+
+
+}

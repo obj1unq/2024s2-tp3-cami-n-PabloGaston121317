@@ -1,9 +1,9 @@
 import cosas.*
 
-object camion {
+class Camion{
 	const property cosas = #{}
-	const tara = 1000
-	const pesoMaximo = 2500
+	const tara = null
+	const pesoMaximo = null
 
 	method totalBultos(){
 
@@ -112,15 +112,12 @@ object camion {
 	method validacionDeCamino(camino){
 		if(camino.puedeViajar(self)) self.error("no cumple con los requerimientos del camino")
 	}
-
-
-	
 }
 
-object almacen {
 
-	const cosasAlmacen = #{}
-	var property capacidadMaxima = 3
+class Almacen {
+		const cosasAlmacen = #{}
+	var property capacidadMaxima = null
 
 	method capacidadMaximaReal(){
 
@@ -145,6 +142,10 @@ object almacen {
 		cosasAlmacen.add(unaCosa)
 	}
 }
+
+
+
+
 
 object ruta9 {
 
