@@ -1,0 +1,97 @@
+import cosas.*
+
+describe "test de cosas" {
+  test "knightRaider peso 500 kilos y su nivel de peligrosidad es de 10" {
+    
+    assert.equals(knightRider.peso(), 500)
+    assert.equals(knightRider.nivelPeligrosidad(), 10)
+
+  }
+
+  test "bumblebee pesa 800 kilos y su nivel de peligrosidad es 15 si esta transformado en auto" {
+    bumblebee.transformacion(auto)
+
+    assert.equals(bumblebee.peso(), 800)
+    assert.equals(bumblebee.nivelPeligrosidad(), 15)
+
+  }
+
+  test "bumblebee pesa 800 kilos y su nivel de peligrosidad transformado en robot en de 30" {
+    
+    bumblebee.transformacion(robot)
+
+    assert.equals(bumblebee.peso(), 800)
+    assert.equals(bumblebee.nivelPeligrosidad(), 30)
+  }
+
+  test "paquete de ladrillos pesa 100 por que en el paquete hay 50 y cada uno pesa 2 kilos, su nivel de peligrosidad es de 2" {
+
+    paqueteDeLadrillos.cantidadLadrillos(50)
+
+    assert.equals(paqueteDeLadrillos.peso(), 100)
+    assert.equals(paqueteDeLadrillos.nivelPeligrosidad(), 2)
+  }
+
+  test "arena de granel pesa 20 kilos (su peso es variable), su peligrosidad es 1" {
+    
+    arenaDeGranel.peso(20)
+
+    assert.equals(arenaDeGranel.peso(), 20)
+    assert.equals(arenaDeGranel.nivelPeligrosidad(), 1)
+  }
+
+  test "bateria antiaerea pesa 300 kilos con los misiles y si peligrosidad es de 100" {
+    
+    bateriaAntiaerea.misiles(true)
+
+    assert.equals(bateriaAntiaerea.peso(), 300)
+    assert.equals(bateriaAntiaerea.nivelPeligrosidad(),100)
+  }
+
+  test "bateria antiaerea pesa 200 sin misiles y su nivel de peligrosidad es 0" {
+    
+    bateriaAntiaerea.misiles(false)
+
+    assert.equals(bateriaAntiaerea.peso(), 200)
+    assert.equals(bateriaAntiaerea.nivelPeligrosidad(), 0)
+
+
+  }
+
+  test "el contenedor portuario tiene ah knightRaider y bumblebee dentro, pesa 100 + la suma de todas las cosas dentro, es tan peligroso como el objeto con mas nivel de peligro" {
+    
+    contenedorPortuario.cargar(knightRider)
+    contenedorPortuario.cargar(bumblebee)
+    bumblebee.transformacion(auto)
+
+    assert.equals(contenedorPortuario.peso(), 1400)
+    assert.equals(contenedorPortuario.nivelPeligrosidad(), 15)
+
+  }
+
+  test "el contenedor esta vacio pesa 100 y su nivel de peligrosidad es 0" {
+    
+    assert.equals(contenedorPortuario.peso(), 100)
+    assert.equals(contenedorPortuario.nivelPeligrosidad(), 0)
+  }
+
+  test "el peso de los residuos radioactivos  son variables y si peligrosidad es de 200" {
+    
+    residuosRadioactivos.peso(100)
+
+    assert.equals(residuosRadioactivos.peso(), 100)
+    assert.equals(residuosRadioactivos.nivelPeligrosidad(), 200)
+
+  }
+
+  test "bumblebee  esta embalado  pesa lo mismo , pero si peligrosidad es la mitad  " {
+    
+    bumblebee.transformacion(robot)
+    embalajeDeSeguridad.embalar(bumblebee)
+    
+    assert.equals(embalajeDeSeguridad.peso(), 800)
+    assert.equals(embalajeDeSeguridad.nivelPeligrosidad(), 15)
+  }
+
+
+}
