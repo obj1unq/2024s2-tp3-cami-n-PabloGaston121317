@@ -1,18 +1,21 @@
+
+
+
 import camion.*
 import cosas.*
 
-describe "testo de camiones y cosas" {
+describe "test de camiones y cosas" {
   test "se agrega carga en el camion" {
     camion.cargar(knightRider)
 
-    assert.equals(camion.cosas(), #{knightRider})
+    assert.equals(#{knightRider},camion.cosas())
   }
 
   test "se descarga una cosa del camion" {
     camion.cargar(knightRider)
     camion.descargar(knightRider)
 
-    assert.equals(camion.cosas(), #{})
+    assert.equals(#{},camion.cosas())
   }
 
   test "el peso de cada uno de los objetos del camion es un numero par" {
@@ -22,6 +25,14 @@ describe "testo de camiones y cosas" {
     assert.that(camion.todoPesoPar())
   }
 
+  test "el peso de uno de los objetos del camion  no es par" {
+    arenaDeGranel.peso(11)
+    camion.cargar(arenaDeGranel)
+
+    assert.notThat(camion.todoPesoPar())
+    
+  }
+
   test "indica si hay alguna carga en el camion con el peso indicado" {
     
     camion.cargar(knightRider)
@@ -29,11 +40,19 @@ describe "testo de camiones y cosas" {
     assert.that(camion.hayAlgunoQuePesa(500))
   }
 
+  test "indica si no hay una carga en el camion con el peso indicado" {
+    
+    camion.cargar(knightRider)
+
+    assert.notThat(camion.hayAlgunoQuePesa(10))
+
+  }
+
   test "devuelve el primer objeto cuyo nivel de peligrosidad es el indicado" {
     
     camion.cargar(knightRider)
 
-    assert.equals(camion.elDeNivel(10), knightRider)
+    assert.equals(knightRider,camion.elDeNivel(10))
   }
 
   test "suma total del peso del camion  con su tara y su carga" {
@@ -50,18 +69,26 @@ describe "testo de camiones y cosas" {
     assert.notThat(camion.excedidoDePeso())
   }
 
-  test "devuelve una coleccion con los objetos cargados qwe superan el nivel de peligrosidad indicado" {
+  test "indica si el peso total es superio al peso maximo (test exediendo el maximo)" {
+    
+    paqueteDeLadrillos.cantidadLadrillos(1000)
+    camion.cargar(paqueteDeLadrillos)
+
+    assert.that(camion.excedidoDePeso())
+  }
+
+  test "devuelve una coleccion con los objetos cargados que superan el nivel de peligrosidad indicado" {
     
     camion.cargar(knightRider)
 
-    assert.equals(camion.objetosQueSuperanPeligrosidad(5), #{knightRider})
+    assert.equals(#{knightRider},camion.objetosQueSuperanPeligrosidad(5))
   }
 
   test "devuelve una coleccion con los objetos mas peligrosos que la cosa indicada" {
     
     camion.cargar(knightRider)
 
-    assert.equals(camion.objetosMasPeligrososQue(knightRider), #{})
+    assert.equals(#{},camion.objetosMasPeligrososQue(knightRider))
   }
 
   test "el camion puede circular si no esta excedido de peso y ninguno de los objetos cargados super el nivel maximo de peligrosidad inficado" {
@@ -84,6 +111,20 @@ describe "testo de camiones y cosas" {
 
   }
 
+  test "indica si el peso de alguna de las cosas que tiene el camion  no esta en el intervalo" {
+    camion.cargar(knightRider)
+    camion.cargar(bumblebee)
+    bumblebee.transformacion(robot)
+    residuosRadioactivos.peso(100)
+    camion.cargar(residuosRadioactivos)
+    camion.cargar(bateriaAntiaerea)
+    bateriaAntiaerea.misiles(true)
+
+    assert.notThat(camion.tieneAlgoQuePesaEntre(0,10))
+
+
+  }
+
   test "devuelve la cosa mas pesada que tenga el camion" {
     
     camion.cargar(knightRider)
@@ -93,7 +134,7 @@ describe "testo de camiones y cosas" {
     camion.cargar(bateriaAntiaerea)
     bateriaAntiaerea.misiles(true)
     
-    assert.equals(camion.cosaMasPesada(), bumblebee)
+    assert.equals(bumblebee,camion.cosaMasPesada())
   }
 
   test "devuelve una lista con los pesos de cada cosa que tiene el camion" {
@@ -105,7 +146,7 @@ describe "testo de camiones y cosas" {
     camion.cargar(bateriaAntiaerea)
     bateriaAntiaerea.misiles(true)
 
-    assert.equals(camion.pesos(),[500,800,15,300])
+    assert.equals([500,800,15,300],camion.pesos())
   }
 
   test "suma la cantidad de bultos que tiene el camion " {
@@ -117,7 +158,7 @@ describe "testo de camiones y cosas" {
     camion.cargar(bateriaAntiaerea)
     bateriaAntiaerea.misiles(true)
 
-    assert.equals(camion.totalBultos(), 6)
+    assert.equals(6,camion.totalBultos())
   }
 
   test "consecuencias de cargar en el camion arenaDegranel para bumblebee - se tranforma en robot" {
@@ -125,7 +166,7 @@ describe "testo de camiones y cosas" {
     camion.cargar(bumblebee)
 
 
-    assert.equals(bumblebee.transformacion(), robot)
+    assert.equals(robot,bumblebee.transformacion())
     
   }
 
@@ -133,7 +174,7 @@ describe "testo de camiones y cosas" {
     
     camion.cargar(paqueteDeLadrillos)
 
-    assert.equals(paqueteDeLadrillos.cantidadLadrillos(), 12)
+    assert.equals(12,paqueteDeLadrillos.cantidadLadrillos()) // consultar en clase
 
   }
 
@@ -159,14 +200,14 @@ describe "testo de camiones y cosas" {
    camion.cargar(contenedorPortuario)
    
 
-   assert.equals(arenaDeGranel.peso(), 20)
+   assert.equals(20,arenaDeGranel.peso())
   }
 
   test "consecuencia de carga residuos radioactivos - agrega 15 kilos" {
     
     camion.cargar(residuosRadioactivos)
 
-    assert.equals(residuosRadioactivos.peso(), 15)
+    assert.equals(15,residuosRadioactivos.peso())
 
   }
 

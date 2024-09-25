@@ -110,7 +110,7 @@ object camion {
 	}
 
 	method validacionDeCamino(camino){
-		if(camino.puedeViajar(camion)) self.error("no cumple con los requerimientos del camino")
+		if(camino.puedeViajar(self)) self.error("no cumple con los requerimientos del camino")
 	}
 
 
